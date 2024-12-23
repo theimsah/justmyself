@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suivi des Activités Quotidiennes</title>
+    <link rel="icon" type="image/x-icon" href="favicon-16x16.png">
+    <script src="https://kit.fontawesome.com/7a37db3ea8.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif; background-color: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 20px;
+        }
+        #signinPassword{    
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    background: #333;
+    border: 1px solid #444;
+    border-radius: 5px;
+    color: #e0e0e0;
+}
+
+#signupPassword{    
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    background: #333;
+    border: 1px solid #444;
+    border-radius: 5px;
+    color: #e0e0e0;
+}
+        #toggleAddActivity {
+    display: block;
+    margin: 0 auto 20px;
+    padding: 10px 20px;
+    background-color: #ccc;
+    border: none;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    text-align: center;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+    margin-bottom: 60px;
+}
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: #1f1f1fb4;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+        }
+        h1, h2 {
+            text-align: center;
+            color: #e0e0e0;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #b0b0b0;
+        }
+        input[type="number"], input[type="checkbox"], input[type="text"], select {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            background: #333;
+            border: 1px solid #444;
+            border-radius: 5px;
+            color: #e0e0e0;
+        }
+        input[type="checkbox"] {
+            width: auto;
+            margin-right: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #292e33;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            transition: background 0.3s ease;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .logout {
+            background: #dc3545; width: min-content;
+        }
+        .logout:hover {
+            background: #c82333;
+        }
+        .result, .points-earned, .jour {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        .result {
+            font-size: 24px;
+        }
+        .points-earned {
+            font-size: 20px;
+        }
+        .jour {
+            font-size: 20px;
+        }
+        .back-btn {
+            background: #6c757d;
+        }
+        .back-btn:hover {
+            background: #5a6268;
+        }
+        .activity-form {
+            background: #2c2c2c;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            color: #e0e0e0;
+            border: 1px solid #444;
+        }
+        .activity-form strong {
+            display: block;
+            margin-bottom: 10px;
+        }
+        .hours-only, .checkbox-only {
+            margin-top: 10px;
+        }
+
+        #signinFormContainer, #signupFormContainer {
+    margin-bottom: 20px;
+}
+
+#toggleForm {
+    display: block;
+    margin: 10px auto;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.3s ease;
+}
+
+#toggleForm:hover {
+    background-color: #0056b3;
+}
+
+/* Styles pour le conteneur du menu */
+.menu-container {
+    position: relative;
+    z-index: 99999999999999999999;
+}
+
+/* Styles pour le bouton du menu hamburger */
+.menu-toggle {
+    position:absolute;
+    top: -120px;
+    right: 0px;
+    cursor: pointer;
+    z-index:1000;
+}
+
+.menu-toggle .bar {
+    width: 30px;
+    height: 3px;
+    background-color: #e0e0e0; /* Couleur du texte */
+    margin: 5px 0;
+    transition: 0.3s;
+}
+
+/* Styles pour le menu latéral */
+.side-menu {
+    position: fixed;
+    top: 0;
+    right: -100%; /* Menu caché hors de l'écran */
+    width: 250px;
+    height: 100%;
+    background-color: #1f1f1f; /* Couleur de fond des conteneurs */
+    color: #e0e0e0; /* Couleur du texte */
+    overflow: auto;
+    transition: 0.3s;
+    padding: 20px;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
+    border-left: 1px solid #444; /* Bordure correspondant à votre style */
+    padding-top: 15px ;
+    
+}
+
+.side-menu.open {
+    right: 0;
+}
+
+/* Styles pour le bouton de fermeture */
+.menu-close {
+    font-size: 24px;
+    cursor: pointer;
+    color: #e0e0e0; /* Couleur du texte */
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    transition: 0.3s;
+}
+
+.menu-close:hover {
+    color: #ff0; /* Couleur survol du texte */
+}
+
+.side-menu ul {
+    
+    margin-top: 0px;
+    list-style: none;
+    padding: 0;
+}
+
+.side-menu ul li {
+    margin: 20px 0;
+}
+
+.side-menu ul li a {
+    color: #e0e0e0; /* Couleur du texte */
+    text-decoration: none;
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+.side-menu ul li a:hover {
+    color: #007bff; /* Couleur de survol correspondant à vos boutons */
+}
+
+/* Animation pour ouvrir/fermer le menu */
+.menu-toggle.open .bar:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 6px);
+}
+
+.menu-toggle.open .bar:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-toggle.open .bar:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -8px);
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .side-menu {
+        width: 200px;
+    }
+
+}
+
+.activity-container {
+    position: relative;
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    background: #f9f9f9;
+}
+
+.delete-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: #ff0000;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px; /* Ajustez la taille de l'icône */
+}
+
+.delete-btn:hover {
+    background-color: #cc0000;
+}
+
+
+@media (max-width: 908px) {
+
+    .side-menu ul {
+    
+    margin-top: 0px;
+    list-style: none;
+    padding: 0;
+}
+    
+    .menu-toggle {
+    position: fixed;
+    top: 37px;
+    right: 37px;
+    cursor: pointer;
+    z-index: 1000;
+
+}
+}
+
+#logo{font-weight: bolder; font-size:larger;}
+.logo{padding-bottom: 100px ;}
+.tout{position: fixed;  /* Fixé par rapport à la fenêtre du navigateur */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Optionnel : couleur de fond avec transparence */
+            z-index: 1000; /* Mettre un index z élevé pour être au-dessus des autres éléments */ 
+            display: none; /* Initialement caché */
+        }
+    </style>
+
+
+</head>
+<!--vers 548  document.getElementById('addActivityBtn').addEventListener('click', async () => {
+                const user = auth.currentUser;
+                if (!user) {
+                    alert('Utilisateur non connecté');
+                    return;
+                }
+                const name = document.getElementById('activityName').value;
+                const points = parseFloat(document.getElementById('activityPoints').value);
+                const type = document.getElementById('activityType').value;
+                await addActivity(user.uid, name, points, type);
+            });-->
+<body>
+
+<div class="tout"></div>
+    <div class="container">
+        <!-- Section d'inscription / connexion -->
+        <!-- Section d'inscription / connexion -->
+<div id="auth-section">
+    <button id="toggleForm">S'inscrire / Se connecter</button>
+    
+    <!-- Formulaire de connexion -->
+    <div id="signinFormContainer">
+        <h1>Connexion</h1>
+        <form id="signinForm">
+            <div class="form-group">
+                <label for="signinEmail">Email</label>
+                <input type="text" id="signinEmail" required>
+            </div>
+            <div class="form-group">
+                <label for="signinPassword">Mot de passe</label>
+                <input type="password" id="signinPassword" required>
+            </div>
+            <button type="submit">Se connecter</button>
+        </form>
+    </div>
+
+    <!-- Formulaire d'inscription -->
+    <div id="signupFormContainer" style="display: none;">
+        <h1>Inscription</h1>
+        <form id="signupForm">
+            <div class="form-group">
+                <label for="signupEmail">Email</label>
+                <input type="text" id="signupEmail" required>
+            </div>
+            <div class="form-group">
+                <label for="signupPassword">Mot de passe</label>
+                <input type="password" id="signupPassword" required>
+            </div>
+            <button type="submit">S'inscrire</button>
+        </form>
+    </div>
+    
+</div>
+
+
+        <!-- Section du profil -->
+        <div id="profile-section" style="display:none;">
+            
+            <a href="profile.html"><img id="profilePictureDisplay" src="" alt="Photo de profil" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;"></a>
+            <h1 id="userName"></h1>
+            <div class="menu-container">
+                <div class="menu-toggle" id="menu-toggle">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+                <nav class="side-menu" id="side-menu">
+                    <ul>
+                        <li class="logo"><a href="acc.html" id="logo">MyProductivity</a></li>
+                        <li><a href="profile.html" id="profileBtn">Profile</a></li>
+                        <li><a href="list.html">Classement</a></li>
+                        <li><a href="edit.html">Journal de bord</a></li>
+                        <li><a href="nouveau.html">Memento Moris</a></li>
+                        <li><a href="https://classroomscreen.com/app/screen/w/81b4b494-9916-4218-84b5-10ecfd07b49a/g/415606ef-fd37-4459-91a9-4dba7f856796/s/1362be8c-53b3-42a0-8639-03b7f5216025">Session de Travail</a></li>
+                        <li><a href="hack.html">Hack</a></li>
+                        <li><a href="#"><button id="logoutBtn" class="logout"><i class="fa-solid fa-right-from-bracket"></i></button></a></li>
+                    </ul>
+                </nav>
+            </div>
+
+
+            <div id="profile-section" style="display: none;">
+                <h1 id="userame">Bienvenue, Utilisateur</h1>
+
+                <div class="form-group">
+                    <label for="signupPassword">Mot de passe</label>
+                    <input type="password" id="signupPassword" required>
+                </div>
+                <img id="profilePictureDisplay" src="" alt="Photo de profil" style="width: 100px; height: 100px; border-radius: 50%;"/>
+                <div id="profile-activities">
+                    <!-- Activités spécifiques de l'utilisateur seront affichées ici -->
+                </div>
+            </div>
+
+            <div class="result">
+                Points gagnés : <span id="dailyPoints">0</span>
+            </div>
+            <div class="points-earned">
+                Points : <span id="cumulativePoints">0</span>
+            </div>
+            <div class="jour">
+                Jour : <span id="submissionDays">0</span>
+            </div>
+
+            <h2>Activités</h2>
+            <div id="activities"></div>
+
+                <!-- Button to toggle the Add Activity Form -->
+<button id="toggleAddActivity">+</button>
+
+<!-- Add Activity Form -->
+<div id="addActivitySection" style="display: none;">
+    <h2>Ajouter une Activité</h2>
+    <div class="form-group">
+        <label for="activityName">Nom de l'activité</label>
+        <input type="text" id="activityName" required>
+    </div>
+    <div class="form-group">
+        <label for="activityPoints">Points</label>
+        <input type="number" id="activityPoints" step="0.1" required>
+    </div>
+    <div class="form-group">
+        <label for="activityType">Type d'activité</label>
+        <select id="activityType">
+            <option value="hours">Heures</option>
+            <option value="checkbox">Case à cocher</option>
+        </select>
+    </div>
+    <button id="addActivityBtn">Ajouter une activité</button>
+</div>
+
+
+            <button id="calculatePointsBtn">Calculer les points</button>
+            <button id="revertPointsBtn" class="back-btn">Annuler les points</button>
+           
+            <div id="uploadProfilePictureBtn"></div>
+        </div>
+    </div>
+
+
+
+
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, query, where, doc, updateDoc, setDoc, getDoc, deleteDoc  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-storage.js";
+    
+        // Configuration Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAJapQ7Y2iwW49alBkG3UsKl8Lq4D8mWwU",
+            authDomain: "last-9aee8.firebaseapp.com",
+            databaseURL: "https://last-9aee8-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "last-9aee8",
+            storageBucket: "last-9aee8.appspot.com",
+            messagingSenderId: "543978749666",
+            appId: "1:543978749666:web:0587a84de496dd7073a8bb",
+            measurementId: "G-SCY61WX3QH"
+        };
+    
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const firestore = getFirestore(app);
+        const storage = getStorage(app);
+
+
+
+
+
+
+
+
+
+        // Vérifie l'état de l'utilisateur
+        function checkAuthState() {
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    document.getElementById('auth-section').style.display = 'none';
+                    document.getElementById('profile-section').style.display = 'block';
+    
+
+
+
+                    // Charger les activités, les points, la couleur de fond et la photo de profil
+                    await loadActivities(user.uid);
+                    await updatePoints(user.uid);
+                    await loadBackgroundColor(user.uid);
+                    await loadProfilePicture(user.uid);
+                } else {
+                    document.getElementById('auth-section').style.display = 'block';
+                    document.getElementById('profile-section').style.display = 'none';
+                }
+            });
+        }
+    
+
+   
+
+       
+       
+
+        
+
+        async function loadActivities(userId) {
+    const activitiesContainer = document.getElementById('activities');
+    activitiesContainer.innerHTML = '';
+    const q = query(collection(firestore, 'activities'), where('userId', '==', userId));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((docSnapshot) => {
+        const data = docSnapshot.data();
+        const activityId = docSnapshot.id;
+        const activityElement = document.createElement('div');
+        activityElement.className = 'activity-form';
+        activityElement.setAttribute('data-id', activityId);
+        activityElement.innerHTML = `
+            <div style="position: relative;">
+                <span class="delete-activity" style="position: absolute; top: 5px; right: 5px; cursor: pointer; color: red;">&times;</span>
+                <strong>${data.name}</strong><br>
+                <div class="hours-only" style="display: ${data.type === 'hours' ? 'block' : 'none'};">
+                    <input type="number" class="hours-input" placeholder="Nombre d'heures" min="0" step="0.1">
+                </div>
+                <div class="checkbox-only" style="display: ${data.type === 'checkbox' ? 'block' : 'none'};">
+                    <label>
+                        <input type="checkbox" class="checkbox-input">
+                        Points par case cochée
+                    </label>
+                </div>
+            </div>
+        `;
+        activitiesContainer.appendChild(activityElement);
+
+        // Ajouter l'événement de suppression
+        const deleteBtn = activityElement.querySelector('.delete-activity');
+        deleteBtn.addEventListener('click', async () => {
+            const confirmDelete = confirm("Êtes-vous sûr de vouloir supprimer cette activité ?");
+            if (confirmDelete) {
+                try {
+                    const activityRef = doc(firestore, 'activities', activityId);
+                    await deleteDoc(activityRef);
+                    console.log(`Activité ${activityId} supprimée avec succès`);
+                    await loadActivities(userId); // Recharger les activités après suppression
+                } catch (error) {
+                    console.error(`Erreur lors de la suppression de l'activité ${activityId}:`, error);
+                }
+            }
+        });
+    });
+}
+
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+    const menuToggle = document.getElementById('menu-toggle');
+    const sideMenu = document.getElementById('side-menu');
+
+    menuToggle.addEventListener('click', () => {
+        if (sideMenu) {
+            sideMenu.classList.toggle('open');
+        } else {
+            console.error("Le menu side-menu n'a pas été trouvé !");
+        }
+    });
+});
+    
+
+
+
+
+
+
+
+
+        // Met à jour les points de l'utilisateur
+        async function updatePoints(userId) {
+            const docRef = doc(firestore, 'points', userId);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                document.getElementById('dailyPoints').innerText = data.dailyPoints || 0;
+                document.getElementById('cumulativePoints').innerText = data.cumulativePoints || 0;
+                document.getElementById('submissionDays').innerText = data.submissionCount || 0;
+            } else {
+                document.getElementById('dailyPoints').innerText = 0;
+                document.getElementById('cumulativePoints').innerText = 0;
+                document.getElementById('submissionDays').innerText = 0;
+                await setDoc(docRef, { dailyPoints: 0, cumulativePoints: 0, submissionCount: 0 }, { merge: true });
+            }
+        }
+    
+
+
+
+
+
+        // Charge la couleur de fond
+        async function loadBackgroundColor(userId) {
+            const docRef = doc(firestore, 'users', userId);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                document.body.style.backgroundColor = data.backgroundColor || '#ffffff'; // Valeur par défaut blanche
+            }
+        }
+    
+
+
+
+
+
+
+        // Charge la photo de profil
+        async function loadProfilePicture(userId) {
+            const docRef = doc(firestore, 'users', userId);
+            const docSnap = await getDoc(docRef);
+            const profilePicElement = document.getElementById('profilePictureDisplay');
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                if (data.profilePictureURL) {
+                    try {
+                        const profilePicUrl = await getDownloadURL(ref(storage, data.profilePictureURL));
+                        profilePicElement.src = profilePicUrl;
+                    } catch (error) {
+                        console.error('Erreur lors du chargement de l\'image de profil:', error);
+                        profilePicElement.src = 'default-profile.png'; // Image par défaut en cas d'erreur
+                    }
+                } else {
+                    profilePicElement.src = 'default-profile.png'; // Image par défaut si aucune image
+                }
+            } else {
+                profilePicElement.src = 'default-profile.png'; // Image par défaut si aucun utilisateur
+            }
+        }
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // Événements DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuthState();
+    
+
+            // Connexion
+            document.getElementById('signinForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('signinEmail').value;
+                const password = document.getElementById('signinPassword').value;
+                try {
+                    await signInWithEmailAndPassword(auth, email, password);
+                    alert('Connexion réussie !');
+                } catch (error) {
+                    console.error('Erreur de connexion:', error);
+                    alert('Erreur de connexion : ' + error.message);
+                }
+            });
+    
+
+            // Inscription
+            document.getElementById('signupForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('signupEmail').value;
+                const password = document.getElementById('signupPassword').value;
+                try {
+                    await createUserWithEmailAndPassword(auth, email, password);
+                    alert('Inscription réussie !');
+                } catch (error) {
+                    console.error('Erreur d\'inscription:', error);
+                    alert('Erreur d\'inscription : ' + error.message);
+                }
+            });
+    
+
+
+            // Déconnexion
+            document.getElementById('logoutBtn').addEventListener('click', async () => {
+                try {
+                    await signOut(auth);
+                    alert('Déconnexion réussie !');
+                } catch (error) {
+                    console.error('Erreur de déconnexion:', error);
+                    alert('Erreur de déconnexion : ' + error.message);
+                }
+            });
+    
+
+
+
+
+
+
+           document.getElementById('calculatePointsBtn').addEventListener('click', async () => {
+    const user = auth.currentUser;
+    if (!user) {
+        alert('Utilisateur non connecté');
+        return;
+    }
+
+    let totalPoints = 0;
+    const activityForms = document.querySelectorAll('.activity-form');
+
+    for (let form of activityForms) {
+        const hoursInput = form.querySelector('.hours-input');
+        const checkboxInput = form.querySelector('.checkbox-input');
+        const activityId = form.getAttribute('data-id');
+        const activityDoc = await getDoc(doc(firestore, 'activities', activityId));
+
+        if (activityDoc.exists()) {
+            const data = activityDoc.data();
+            let points = 0;
+
+            if (data.type === 'hours' && hoursInput.value) {
+                const hoursValue = parseFloat(hoursInput.value);
+                if (!isNaN(hoursValue)) {
+                    points = hoursValue * data.points;
+                } else {
+                    console.warn(`Valeur d'heure invalide pour l'activité ${activityId}`);
+                }
+            } else if (data.type === 'checkbox' && checkboxInput.checked) {
+                points = data.points;
+            }
+
+            totalPoints += points;
+        }
+    }
+
+    const docRef = doc(firestore, 'points', user.uid);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+        const dailyPoints = totalPoints;
+        const previousData = docSnap.data();
+        const cumulativePoints = (previousData.cumulativePoints || 0) + totalPoints;
+        const submissionCount = (previousData.submissionCount || 0) + 1;
+
+        await updateDoc(docRef, { dailyPoints, cumulativePoints, submissionCount });
+        document.getElementById('dailyPoints').innerText = dailyPoints;
+        document.getElementById('cumulativePoints').innerText = cumulativePoints;
+        document.getElementById('submissionDays').innerText = submissionCount;
+    } else {
+        await setDoc(docRef, {
+            dailyPoints: totalPoints,
+            cumulativePoints: totalPoints,
+            submissionCount: 1
+        });
+        document.getElementById('dailyPoints').innerText = totalPoints;
+        document.getElementById('cumulativePoints').innerText = totalPoints;
+        document.getElementById('submissionDays').innerText = 1;
+    }
+
+    // Réinitialisation des champs après le calcul des points
+    activityForms.forEach((form) => {
+        const hoursInput = form.querySelector('.hours-input');
+        const checkboxInput = form.querySelector('.checkbox-input');
+        
+        if (hoursInput) {
+            hoursInput.value = ''; // Réinitialiser l'input d'heures
+        }
+        
+        if (checkboxInput) {
+            checkboxInput.checked = false; // Décocher la case à cocher
+        }
+    });
+
+    alert('Points calculés et formulaire réinitialisé.');
+});
+
+
+            
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            // Couleur de fond
+            document.getElementById('backgroundColorPicker').addEventListener('input', async (e) => {
+                const color = e.target.value;
+                const user = auth.currentUser;
+                if (!user) {
+                    alert('Utilisateur non connecté');
+                    return;
+                }
+                await updateDoc(doc(firestore, 'users', user.uid), { backgroundColor: color });
+                document.body.style.backgroundColor = color;
+            });
+    
+            // Photo de profil
+            document.getElementById('profilePicInput').addEventListener('change', async (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const user = auth.currentUser;
+                    if (!user) {
+                        alert('Utilisateur non connecté');
+                        return;
+                    }
+                    const profilePicRef = ref(storage, `profilePics/${user.uid}/${file.name}`);
+                    await uploadBytes(profilePicRef, file);
+                    const profilePicUrl = await getDownloadURL(profilePicRef);
+                    await updateDoc(doc(firestore, 'users', user.uid), { profilePictureURL: `profilePics/${user.uid}/${file.name}` });
+                    document.getElementById('profilePictureDisplay').src = profilePicUrl;
+                }
+            });
+    
+
+
+
+    
+            // Toggle form d'inscription/connexion
+            document.getElementById('toggleForm').addEventListener('click', () => {
+                const signinForm = document.getElementById('signinFormContainer');
+                const signupForm = document.getElementById('signupFormContainer');
+                if (signupForm.style.display === 'none') {
+                    signupForm.style.display = 'block';
+                    signinForm.style.display = 'none';
+                } else {
+                    signupForm.style.display = 'none';
+                    signinForm.style.display = 'block';
+                }
+            });
+    
+            
+    
+            
+        });
+
+
+
+
+
+
+
+            // Toggle Add Activity Form
+            document.getElementById('toggleAddActivity').addEventListener('click', () => {
+                const addActivitySection = document.getElementById('addActivitySection');
+                addActivitySection.style.display = addActivitySection.style.display === 'block' ? 'none' : 'block';
+            });
+
+// Ajouter une activité
+document.getElementById('addActivityBtn').addEventListener('click', async () => {
+                const activityName = document.getElementById('activityName').value;
+                const activityPoints = parseFloat(document.getElementById('activityPoints').value);
+                const activityType = document.getElementById('activityType').value;
+    
+                if (activityName && !isNaN(activityPoints)) {
+                    const user = auth.currentUser;
+                    if (!user) {
+                        alert('Utilisateur non connecté');
+                        return;
+                    }
+                    await addDoc(collection(firestore, 'activities'), {
+                        name: activityName,
+                        points: activityPoints,
+                        type: activityType,
+                        userId: user.uid
+                    });
+    
+                    // Réinitialiser le formulaire et les activités
+                    document.getElementById('activityName').value = '';
+                    document.getElementById('activityPoints').value = '';
+                    document.getElementById('activityType').value = 'hours';
+                    await loadActivities(user.uid);
+                    
+
+                    document.getElementById('addActivitySection').style.display = 'none';
+
+                }
+            });
+
+        
+
+
+
+           // Sélectionne les éléments par leur sélecteur
+const menu = document.querySelector('.menu-toggle');
+const tout = document.querySelector('.tout');
+
+// Ajoute un écouteur d'événement au div "menu"
+menu.addEventListener('click', function() {
+    // Vérifie l'état actuel de display de l'élément "tout"
+    if (tout.style.display === 'block') {
+        // Si l'élément est déjà affiché, le cacher
+        tout.style.display = 'none';
+    } else {
+        // Sinon, afficher l'élément
+        tout.style.display = 'block';
+    }
+});
+
+
+
+
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    const userDoc = await getDoc(doc(firestore, 'users', user.uid));
+                    if (userDoc.exists()) {
+                        const userData = userDoc.data();
+                        document.getElementById('userName').innerText = ` ${userData.username || 'Non défini'}`;
+                    }
+                } else {
+                    window.location.href = 'acc.html'; // Redirection vers la page de connexion
+                }
+            });
+
+            
+
+
+            document.getElementById('userName').addEventListener('', async (event) => {
+                const userData = event.target.value;
+                document = color;
+                document.getElementById('userName').textContent = firestore;
+
+                const user = auth.currentUser;
+                if (user) {
+                    await updateDoc(doc(firestore, 'users', user.uid), {
+                        backgroundColor: color
+                    });
+                }
+            });
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </script>
+    
+</body>
+</html>
+
+
+
+<!--
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+    import { getFirestore, collection, addDoc, getDocs, query, where, doc, updateDoc, setDoc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-storage.js";
+
+    // Configuration Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyAJapQ7Y2iwW49alBkG3UsKl8Lq4D8mWwU",
+        authDomain: "last-9aee8.firebaseapp.com",
+        databaseURL: "https://last-9aee8-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "last-9aee8",
+        storageBucket: "last-9aee8.appspot.com",
+        messagingSenderId: "543978749666",
+        appId: "1:543978749666:web:0587a84de496dd7073a8bb",
+        measurementId: "G-SCY61WX3QH"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const firestore = getFirestore(app);
+    const storage = getStorage(app);
+
+    // Vérifie l'état de l'utilisateur
+    function checkAuthState() {
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                document.getElementById('auth-section').style.display = 'none';
+                document.getElementById('profile-section').style.display = 'block';
+                
+                // Charger les activités, les points, la couleur de fond et la photo de profil
+                await loadActivities(user.uid);
+                await updatePoints(user.uid);
+                await loadBackgroundColor(user.uid);
+                await loadProfilePicture(user.uid);
+            } else {
+                document.getElementById('auth-section').style.display = 'block';
+                document.getElementById('profile-section').style.display = 'none';
+            }
+        });
+    }
+
+    // Connexion
+    document.getElementById('signinForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('signinEmail').value;
+        const password = document.getElementById('signinPassword').value;
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+            alert('Connexion réussie !');
+        } catch (error) {
+            console.error('Erreur de connexion:', error);
+            alert('Erreur de connexion : ' + error.message);
+        }
+    });
+
+    // Inscription
+    document.getElementById('signupForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('signupEmail').value;
+        const password = document.getElementById('signupPassword').value;
+        try {
+            await createUserWithEmailAndPassword(auth, email, password);
+            alert('Inscription réussie !');
+        } catch (error) {
+            console.error('Erreur d\'inscription:', error);
+            alert('Erreur d\'inscription : ' + error.message);
+        }
+    });
+
+    // Déconnexion
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+        try {
+            await signOut(auth);
+            alert('Déconnexion réussie !');
+        } catch (error) {
+            console.error('Erreur de déconnexion:', error);
+            alert('Erreur de déconnexion : ' + error.message);
+        }
+    });
+
+    // Toggle form d'inscription/connexion
+    document.getElementById('toggleForm').addEventListener('click', () => {
+        const signinForm = document.getElementById('signinFormContainer');
+        const signupForm = document.getElementById('signupFormContainer');
+        if (signupForm.style.display === 'none') {
+            signupForm.style.display = 'block';
+            signinForm.style.display = 'none';
+        } else {
+            signupForm.style.display = 'none';
+            signinForm.style.display = 'block';
+        }
+    });
+
+    // Toggle Add Activity Form
+    document.getElementById('toggleAddActivity').addEventListener('click', () => {
+        const addActivitySection = document.getElementById('addActivitySection');
+        addActivitySection.style.display = addActivitySection.style.display === 'block' ? 'none' : 'block';
+    });
+
+    // Ajouter une activité
+    document.getElementById('addActivityBtn').addEventListener('click', async () => {
+        const activityName = document.getElementById('activityName').value;
+        const activityPoints = parseFloat(document.getElementById('activityPoints').value);
+        const activityType = document.getElementById('activityType').value;
+
+        if (activityName && !isNaN(activityPoints)) {
+            const user = auth.currentUser;
+            if (!user) {
+                alert('Utilisateur non connecté');
+                return;
+            }
+            await addDoc(collection(firestore, 'activities'), {
+                name: activityName,
+                points: activityPoints,
+                type: activityType,
+                userId: user.uid
+            });
+
+            // Réinitialiser le formulaire et les activités
+            document.getElementById('activityName').value = '';
+            document.getElementById('activityPoints').value = '';
+            document.getElementById('activityType').value = 'hours';
+            await loadActivities(user.uid);
+
+            document.getElementById('addActivitySection').style.display = 'none';
+        }
+    });
+
+    // Calculer les points
+    document.getElementById('calculatePointsBtn').addEventListener('click', async () => {
+        const user = auth.currentUser;
+        if (!user) {
+            alert('Utilisateur non connecté');
+            return;
+        }
+
+        let totalPoints = 0;
+        const activityForms = document.querySelectorAll('.activity-form');
+
+        for (let form of activityForms) {
+            const hoursInput = form.querySelector('.hours-input');
+            const checkboxInput = form.querySelector('.checkbox-input');
+            const activityId = form.getAttribute('data-id');
+            const activityDoc = await getDoc(doc(firestore, 'activities', activityId));
+
+            if (activityDoc.exists()) {
+                const data = activityDoc.data();
+                let points = 0;
+
+                if (data.type === 'hours' && hoursInput.value) {
+                    const hoursValue = parseFloat(hoursInput.value);
+                    if (!isNaN(hoursValue)) {
+                        points = hoursValue * data.points;
+                    } else {
+                        console.warn(`Valeur d'heure invalide pour l'activité ${activityId}`);
+                    }
+                } else if (data.type === 'checkbox' && checkboxInput.checked) {
+                    points = data.points;
+                }
+
+                totalPoints += points;
+            }
+        }
+
+        const docRef = doc(firestore, 'points', user.uid);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            const dailyPoints = totalPoints;
+            const previousData = docSnap.data();
+            const cumulativePoints = (previousData.cumulativePoints || 0) + totalPoints;
+            const submissionCount = (previousData.submissionCount || 0) + 1;
+
+            await updateDoc(docRef, { dailyPoints, cumulativePoints, submissionCount });
+            document.getElementById('dailyPoints').innerText = dailyPoints;
+            document.getElementById('cumulativePoints').innerText = cumulativePoints;
+            document.getElementById('submissionDays').innerText = submissionCount;
+        } else {
+            await setDoc(docRef, {
+                dailyPoints: totalPoints,
+                cumulativePoints: totalPoints,
+                submissionCount: 1
+            });
+            document.getElementById('dailyPoints').innerText = totalPoints;
+            document.getElementById('cumulativePoints').innerText = totalPoints;
+            document.getElementById('submissionDays').innerText = 1;
+        }
+
+        // Réinitialisation des champs après le calcul des points
+        activityForms.forEach((form) => {
+            const hoursInput = form.querySelector('.hours-input');
+            const checkboxInput = form.querySelector('.checkbox-input');
+
+            if (hoursInput) {
+                hoursInput.value = ''; // Réinitialiser l'input d'heures
+            }
+
+            if (checkboxInput) {
+                checkboxInput.checked = false; // Décocher la case à cocher
+            }
+        });
+
+        alert('Points calculés et enregistrés avec succès !');
+    });
+
+    // Charger les activités de l'utilisateur
+    async function loadActivities(userId) {
+        const q = query(collection(firestore, 'activities'), where('userId', '==', userId));
+        const querySnapshot = await getDocs(q);
+        const activityList = document.getElementById('activityList');
+        activityList.innerHTML = ''; // Réinitialiser la liste
+
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            const li = document.createElement('li');
+            li.textContent = `Activité: ${data.name} - Points: ${data.points} - Type: ${data.type}`;
+            li.setAttribute('data-id', doc.id);
+            li.classList.add('activity-form');
+            
+            if (data.type === 'hours') {
+                const input = document.createElement('input');
+                input.type = 'number';
+                input.classList.add('hours-input');
+                input.placeholder = 'Heures';
+                li.appendChild(input);
+            } else if (data.type === 'checkbox') {
+                const input = document.createElement('input');
+                input.type = 'checkbox';
+                input.classList.add('checkbox-input');
+                li.appendChild(input);
+            }
+
+            activityList.appendChild(li);
+        });
+    }
+
+    // Mettre à jour les points affichés
+    async function updatePoints(userId) {
+        const docRef = doc(firestore, 'points', userId);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            document.getElementById('dailyPoints').innerText = data.dailyPoints || 0;
+            document.getElementById('cumulativePoints').innerText = data.cumulativePoints || 0;
+            document.getElementById('submissionDays').innerText = data.submissionCount || 0;
+        }
+    }
+
+    // Charger la couleur de fond
+    async function loadBackgroundColor(userId) {
+        const docRef = doc(firestore, 'background', userId);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            document.body.style.backgroundColor = data.color || '#ffffff';
+        }
+    }
+
+    // Charger la photo de profil
+    async function loadProfilePicture(userId) {
+        const storageRef = ref(storage, `profilePictures/${userId}`);
+        try {
+            const url = await getDownloadURL(storageRef);
+            document.getElementById('profilePicture').src = url;
+        } catch (error) {
+            console.error('Erreur lors du chargement de la photo de profil:', error);
+            document.getElementById('profilePicture').src = 'default-profile.png'; // Image par défaut
+        }
+    }
+
+    // Initialisation
+    document.addEventListener('DOMContentLoaded', () => {
+        checkAuthState();
+    });
+</script>-->

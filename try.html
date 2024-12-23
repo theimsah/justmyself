@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top 15 Hacks de Productivité</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #ffffff;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            text-align: center;
+        }
+
+        .hack-container {
+            width: 100%;
+            max-width: 1000px;
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .hack {
+            border-bottom: 1px solid #333;
+        }
+
+        .hack:last-child {
+            border-bottom: none;
+        }
+
+        .hack-title {
+            padding: 15px;
+            cursor: pointer;
+            background-color: #2c2c2c;
+            transition: background-color 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.2rem;
+        }
+
+        .hack-title:hover {
+            background-color: #3b3b3b;
+        }
+
+        .hack-content {
+            padding: 15px;
+            display: none;
+            background-color: #121212;
+        }
+
+        .hack-content.show {
+            display: block;
+        }
+
+        .hack-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .hack-content p {
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .hack-content a {
+            color: #1e90ff;
+            text-decoration: none;
+        }
+
+        .hack-content a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Top 15 Hacks de Productivité</h1>
+
+    <div class="hack-container">
+        <!-- Dynamically generated content will go here -->
+    </div>
+
+    <script>
+        const hacks = [
+            {
+                title: "La loi de Pareto (80/20)",
+                description: `
+                    La loi de Pareto, également connue sous le nom de principe 80/20, affirme que 80 % des résultats proviennent de 20 % des efforts. 
+                    Pour appliquer ce principe, identifiez les 20 % de tâches ou d'activités qui génèrent la majorité de vos résultats ou de vos profits.
+                    Concentrez-vous sur ces tâches pour améliorer votre efficacité globale. Cela peut être appliqué dans divers domaines comme 
+                    la gestion du temps, le marketing, et même la gestion des projets.
+                    <br><br>
+                    <strong>Conseil pratique :</strong> Faites un audit de vos tâches régulières pour identifier celles qui contribuent le plus à vos objectifs.
+                    <br><br>
+                    <strong>Référence recommandée :</strong> <a href="https://fr.wikipedia.org/wiki/Principe_de_Pareto" target="_blank">En savoir plus sur la loi de Pareto</a>
+                `,
+                image: "https://via.placeholder.com/800x400?text=Pareto+Principle",
+                video: "https://www.youtube.com/embed/6deH8sWgTY8"
+            },
+            {
+                title: "La loi de Parkinson",
+                description: `
+                    La loi de Parkinson stipule que le travail s'étend pour remplir le temps disponible pour son achèvement. En d'autres termes, 
+                    plus vous donnez de temps pour accomplir une tâche, plus il faudra de temps pour la terminer. 
+                    Fixez des délais plus courts et plus stricts pour éviter la procrastination et améliorer votre efficacité.
+                    <br><br>
+                    <strong>Conseil pratique :</strong> Déterminez des délais réalistes mais serrés pour vos projets afin de rester concentré et productif.
+                    <br><br>
+                    <strong>Référence recommandée :</strong> <a href="https://fr.wikipedia.org/wiki/Loi_de_Parson" target="_blank">En savoir plus sur la loi de Parkinson</a>
+                `,
+                image: "https://via.placeholder.com/800x400?text=Parkinson+Law",
+                video: "https://www.youtube.com/embed/2I9l1aeVf6Y"
+            },
+            {
+                title: "La technique Pomodoro",
+                description: `
+                    La technique Pomodoro consiste à travailler en blocs de temps de 25 minutes, appelés "Pomodoros", suivis de 5 minutes de pause. 
+                    Après quatre Pomodoros, prenez une pause plus longue de 15 à 30 minutes. Cette méthode aide à maintenir une concentration intense 
+                    et à éviter l'épuisement. 
+                    <br><br>
+                    <strong>Conseil pratique :</strong> Utilisez un minuteur pour suivre vos sessions de travail et vos pauses afin de maximiser votre productivité.
+                    <br><br>
+                    <strong>Référence recommandée :</strong> <a href="https://fr.wikipedia.org/wiki/Technique_Pomodoro" target="_blank">En savoir plus sur la technique Pomodoro</a>
+                `,
+                image: "https://via.placeholder.com/800x400?text=Pomodoro+Technique",
+                video: "https://www.youtube.com/embed/5ZySBLSG5tE"
+            },
+            {
+                title: "Le conditionnement des habitudes",
+                description: `
+                    Le conditionnement des habitudes consiste à créer des routines en associant une nouvelle habitude à une habitude déjà existante. 
+                    Cela rend le changement de comportement plus facile et plus naturel. Par exemple, si vous voulez commencer à faire de l'exercice le matin, 
+                    faites-le juste après votre routine de brossage des dents.
+                    <br><br>
+                    <strong>Conseil pratique :</strong> Identifiez une habitude existante que vous faites régulièrement et associez-y votre nouvelle habitude.
+                    <br><br>
+                    <strong>Référence recommandée :</strong> <a href="https://www.atlantico.fr/article/decryptage/le-secret-des-habitudes-l-avantage-d-acquérir-des-comportements-automatiques" target="_blank">En savoir plus sur le conditionnement des habitudes</a>
+                `,
+                image: "https://via.placeholder.com/800x400?text=Habit+Stacking",
+                video: "https://www.youtube.com/embed/4bS-6d-QTOA"
+            },
+            {
+                title: "La méthode GTD (Getting Things Done)",
+                description: `
+                    La méthode Getting Things Done (GTD) de David Allen est un système de gestion du temps qui consiste à capturer toutes vos tâches 
+                    et idées dans un système externe, comme une application ou un carnet. Vous organisez ensuite ces éléments en actions concrètes 
+                    et les priorisez en fonction de leur importance. Cela aide à réduire le stress et à améliorer la productivité en évitant 
+                    l'encombrement mental.
+                    <br><br>
+                    <strong>Conseil pratique :</strong> Utilisez une application de gestion des tâches pour capturer et organiser vos éléments GTD.
+                    <br><br>
+                    <strong>Référence recommandée :</strong> <a href="https://fr.wikipedia.org/wiki/Getting_Things_Done" target="_blank">En savoir plus sur la méthode GTD</a>
+                `,
+                image: "https://via.placeholder.com/800x400?text=GTD+Method",
+                video: "https://www.youtube.com/embed/4i8bBrHATqo"
+            },
+            {
+                title: "La règle des 2 minutes",
+                description: `
+                    La règle des 2 minutes stipule que si une tâche peut être effectuée en moins de 2 minutes, faites-la immédiatement. 
+                    Cela permet d'éviter l'accumulation de petites tâches qui peuvent devenir accablantes si elles sont laissées de côté.
+                    <br><br>
+                    <strong>Conseil pratique :</strong> Gardez une liste de tâches rapide et accomplissez immédiatement les éléments qui prennent moins de 2 minutes.
+                    <br><br>
+                    <strong>Référence recommandée :</strong> <a href="https://www.toggl.com/blog/2-minute-rule" target="_blank">En savoir plus sur la règle des 2 minutes</a>
+                `,
+                image: "https://via.placeholder.com/800x400?text=2-Minute+Rule",
+                video: "https://www.youtube.com/embed/7Y4W4Lqrx4k"
+            },
+            {
+                title: "L'algorithme Ivy Lee",
+                description: `
+                    L'algorithme Ivy Lee est une méthode de gestion des tâches qui consiste à établir une liste de 6 tâches importantes 
+                    à accomplir le lendemain, classées par ordre de priorité. Concentrez-vous sur une tâche à la fois jusqu'à ce qu'elle soit terminée. 
+                    Cette méthode aide à maintenir la concentration et à améliorer l'efficacité.
+                    <br><br>
+                    <strong>Conseil pratique :</strong> Écrivez votre liste de tâches avant de finir votre journée de travail pour commencer le lendemain en étant organisé.
+                    <br><br>
+                    <strong>Référence recommandée :</strong> <a href="https://www.entrepreneur.com/article/270194" target="_blank">En savoir plus sur l'algorithme Ivy Lee</a>
+                `,
+                image: "https://via.placeholder.com/800x400?text=Ivy+Lee+Method",
+                video: "https://www.youtube.com/embed/W6llGJACBO4"
+            },
+            {
+                title: "La technique des blocs de temps",
+                description: `
+                    La technique des blocs de temps consiste à réserver des créneaux spécifiques dans votre emploi du temps pour différents types de tâches. 
+                    Par exemple, réservez un bloc de temps pour les réunions, un autre pour le travail concentré, et ainsi de suite. 
+                    Cela permet de mieux organiser votre journée et de minimiser les interruptions.
+                    <br><br>
+                    <strong>Conseil pratique :</strong> Utilisez un calendrier numérique pour bloquer des périodes spécifiques pour vos tâches importantes.
+                    <br><br>
+                    <strong>Référence recommandée :</strong> <a href="https://www.smartsheet.com/content/time-blocking" target="_blank">En savoir plus sur les blocs de temps</a>
+                `,
+                image: "https://via.placeholder.com/800x400?text=Time+Blocking",
+                video: "https://www.youtube.com/embed/5dzwZcZgqzI"
+            },
+            {
+                title: "L'élimination des distractions",
+                description: `
+                    Pour être plus productif, il est crucial de créer un environnement de travail sans distractions. Utilisez des outils comme 
+                    des applications de blocage de sites web ou configurez des espaces de travail dédiés pour minimiser les interruptions. 
+                    Évitez également les notifications non essentielles et créez des plages horaires spécifiques pour les vérifications d'emails.
+                    <br><br>
+                    <strong>Conseil pratique :</strong> Configurez des applications de gestion du temps ou de concentration pour limiter les distractions numériques.
+                    <br><br>
+                    <strong>Référence recommandée :</strong> <a href="https://www.apa.org/news/press/releases/stress/2021/distractions-work" target="_blank">En savoir plus sur la gestion des distractions</a>
+                `,
+                image: "https://via.placeholder.com/800x400?text=Eliminate+Distractions",
+                video: "https://www.youtube.com/embed/L9jUKY9G9gk"
+            },
+            {
+                title: "La matrice d'Eisenhower",
+                description: `
+                    La matrice d'Eisenhower est un outil de gestion du temps qui vous aide à prioriser les tâches en fonction de leur urgence et de leur importance. 
+                    Elle divise les tâches en quatre quadrants : Urgent et important, Important mais non urgent, Urgent mais non important, et Non urgent et non important. 
+                    Cela permet de concentrer votre énergie sur les tâches qui comptent vraiment.
+                    <br><br>
+                    <strong>Conseil pratique :</strong> Utilisez une feuille de calcul ou un tableau pour créer votre propre matrice d'Eisenhower et classer vos tâches.
+                    <br><br>
+                    <strong>Référence recommandée :</strong> <a href="https://www.eisenhower.me/eisenhower-matrix/" target="_blank">En savoir plus sur la matrice d'Eisenhower</a>
+                `,
+                image: "https://via.placeholder.com/800x400?text=Eisenhower+Matrix",
+                video: "https://www.youtube.com/embed/E9R35_ij-Hs"
+            },
+            {
+                title: "Le temps de réflexion",
+                description: `
+                    Accordez-vous des moments réguliers pour réfléchir à vos progrès, ajuster vos objectifs et améliorer vos méthodes de travail. 
+                    La réflexion régulière vous aide à rester aligné avec vos objectifs, à identifier les obstacles et à ajuster vos stratégies 
+                    en conséquence. Intégrez des sessions de réflexion dans votre emploi du temps pour assurer un suivi constant.
+                    <br><br>
+                    <strong>Conseil pratique :</strong> Planifiez des sessions de réflexion hebdomadaires pour évaluer vos performances et ajuster vos plans.
+                    <br><br>
+                    <strong>Référence recommandée :</strong> <a href="https://www.psychologytoday.com/us/basics/self-reflection" target="_blank">En savoir plus sur le temps de réflexion</a>
+                `,
+                image: "https://via.placeholder.com/800x400?text=Reflection+Time",
+                video: "https://www.youtube.com/embed/Jz6Vd8yVf8Y"
+            },
+            {
+                title: "La technique des 5 pourquoi",
+                description: `
+                    La technique des 5 pourquoi est une méthode d'analyse de problème qui consiste à poser la question "Pourquoi ?" cinq fois 
+                    pour identifier la cause profonde d'un problème. En comprenant la racine du problème, vous pouvez trouver des solutions plus 
+                    efficaces et durables.
+                    <br><br>
+                    <strong>Conseil pratique :</strong> Appliquez cette technique lors de la résolution de problèmes complexes pour atteindre des solutions approfondies.
+                    <br><br>
+                    <strong>Référence recommandée :</strong> <a href="https://fr.wikipedia.org/wiki/Les_5_pourquoi" target="_blank">En savoir plus sur la technique des 5 pourquoi</a>
+                `,
+                image: "https://via.placeholder.com/800x400?text=5+Whys+Technique",
+                video: "https://www.youtube.com/embed/8NkL8O5PUH0"
+            },
+            {
+                title: "La planification rétroactive",
+                description: `
+                    La planification rétroactive consiste à commencer par définir votre objectif final et à travailler en arrière pour établir 
+                    les étapes nécessaires pour atteindre cet objectif. Cette méthode aide à clarifier les étapes nécessaires et à créer un plan 
+                    d'action réaliste.
+                    <br><br>
+                    <strong>Conseil pratique :</strong> Utilisez cette technique pour des projets complexes ou à long terme pour garantir que chaque étape est bien planifiée.
+                    <br><br>
+                    <strong>Référence recommandée :</strong> <a href="https://www.mindtools.com/pages/article/newHTE_91.htm" target="_blank">En savoir plus sur la planification rétroactive</a>
+                `,
+                image: "https://via.placeholder.com/800x400?text=Backward+Planning",
+                video: "https://www.youtube.com/embed/Tc4s5E3TrOo"
+            },
+            {
+                title: "L'organisation de l'espace de travail",
+                description: `
+                    Un espace de travail bien organisé et minimaliste contribue à réduire le stress et à améliorer la concentration. 
+                    Gardez votre bureau propre, rangez les documents importants et créez un environnement qui favorise la productivité. 
+                    Un espace bien organisé permet de travailler plus efficacement et de mieux gérer le temps.
+                    <br><br>
+                    <strong>Conseil pratique :</strong> Investissez dans des solutions de rangement et de gestion du bureau pour maintenir un environnement de travail ordonné.
+                    <br><br>
+                    <strong>Référence recommandée :</strong> <a href="https://www.bbc.com/worklife/article/20190813-how-to-create-an-organized-workspace" target="_blank">En savoir plus sur l'organisation de l'espace de travail</a>
+                `,
+                image: "https://via.placeholder.com/800x400?text=Workspace+Organization",
+                video: "https://www.youtube.com/embed/SdRYNszM9Ck"
+            },
+            {
+                title: "L'application de la règle du 1-3-5",
+                description: `
+                    La règle du 1-3-5 consiste à identifier chaque jour 1 grande tâche, 3 tâches moyennes et 5 petites tâches. 
+                    Cette méthode aide à structurer vos priorités de manière équilibrée et à garantir que vous avancez sur des objectifs importants 
+                    tout en accomplissant les tâches plus petites.
+                    <br><br>
+                    <strong>Conseil pratique :</strong> Utilisez une liste quotidienne pour appliquer cette règle et ajuster vos priorités en fonction des urgences.
+                    <br><br>
+                    <strong>Référence recommandée :</strong> <a href="https://www.cnbc.com/2017/05/10/the-1-3-5-rule-for-increasing-productivity.html" target="_blank">En savoir plus sur la règle du 1-3-5</a>
+                `,
+                image: "https://via.placeholder.com/800x400?text=1-3-5+Rule",
+                video: "https://www.youtube.com/embed/qcXOf9RofCU"
+            }
+        ];
+
+        const container = document.querySelector('.hack-container');
+
+        hacks.forEach((hack, index) => {
+            const hackElement = document.createElement('div');
+            hackElement.className = 'hack';
+
+            hackElement.innerHTML = `
+                <div class="hack-title">${index + 1}. ${hack.title}</div>
+                <div class="hack-content">
+                    <img src="${hack.image}" alt="${hack.title}" class="hack-image">
+                    <p>${hack.description}</p>
+                    <div class="video-container">
+                        <iframe src="${hack.video}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </div>
+            `;
+
+            hackElement.querySelector('.hack-title').addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                content.classList.toggle('show');
+            });
+
+            container.appendChild(hackElement);
+        });
+    </script>
+</body>
+</html>

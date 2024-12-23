@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/7a37db3ea8.js" crossorigin="anonymous"></script>
+    <title>Classement des compétiteurs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #ffffff;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: white;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .user-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .user-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #3f3f3f;
+            background-color: #3F3F3F;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .user-item:hover {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #353535;
+            background-color: #353535;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .user-item img {
+            width: 100px; height: 100px; border-radius: 50%; object-fit: cover;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+        .user-item .username {
+            flex: 1;
+            text-align: center;
+            font-size: 16px;
+            margin: 0;
+        }
+        .user-item .points {
+            font-size: 16px;
+            color: #ffffff;
+            text-align: right;
+        }
+        .arrow {
+            position: absolute;
+            top: 26px;
+            left: 26px;
+            color: white;
+            font-size: 130%;
+        }
+        .arrow a {
+            color: white;
+            font-size: 130%;
+        }
+        .container {
+            max-width: 700px;
+            margin: 10px auto;
+            background: #1f1f1fb4;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <a class="arrow" href="index.html"><i class="fa-solid fa-arrow-left"></i></a>
+        <h1>Classement</h1>
+        <ul id="pseudo-list" class="user-list"></ul> <!-- Liste pour afficher les pseudos et images -->
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+        import { getFirestore, collection, getDocs, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+        const firebaseConfig = {
+    apiKey: "AIzaSyCV2ffPnfoq2Lpdc3eT47BXvVdxS4GBzDE",
+    authDomain: "endd-724fb.firebaseapp.com",
+    projectId: "endd-724fb",
+    storageBucket: "endd-724fb.appspot.com",
+    messagingSenderId: "455523572128",
+    appId: "1:455523572128:web:dc12bbd99ad2c191836cc5",
+    measurementId: "G-DX8JK1VZRK"
+  };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const firestore = getFirestore(app);
+
+        async function getAllUserDetails() {
+            const users = [];
+            const querySnapshot = await getDocs(collection(firestore, "users"));
+            
+            for (const docSnapshot of querySnapshot.docs) {
+                const userData = docSnapshot.data();
+                if (userData.username && userData.profilePictureURL) {
+                    const userId = docSnapshot.id;
+                    const pointsSnapshot = await getDoc(doc(firestore, "points", userId));
+                    const pointsData = pointsSnapshot.data();
+                    const cumulativePoints = pointsData ? pointsData.cumulativePoints : 0;
+
+                    users.push({
+                        username: userData.username,
+                        profilePictureURL: userData.profilePictureURL,
+                        cumulativePoints: cumulativePoints
+                    });
+                }
+            }
+
+            // Trier les utilisateurs par points en ordre décroissant
+            users.sort((a, b) => b.cumulativePoints - a.cumulativePoints);
+
+            return users;
+        }
+
+        function updateUserList(users) {
+            const pseudoListElement = document.getElementById("pseudo-list");
+            pseudoListElement.innerHTML = ""; // Réinitialiser la liste
+
+            users.forEach((user) => {
+                const listItem = document.createElement("li");
+                listItem.className = "user-item";
+
+                const img = document.createElement("img");
+                img.src = user.profilePictureURL;
+                img.alt = user.username;
+
+                const spanUsername = document.createElement("span");
+                spanUsername.className = "username";
+                spanUsername.textContent = user.username;
+
+                const spanPoints = document.createElement("span");
+                spanPoints.className = "points";
+                spanPoints.textContent = `Points: ${user.cumulativePoints}`;
+
+                listItem.appendChild(img);
+                listItem.appendChild(spanUsername);
+                listItem.appendChild(spanPoints);
+                pseudoListElement.appendChild(listItem);
+            });
+        }
+
+        function refreshUserList() {
+            getAllUserDetails().then((users) => {
+                updateUserList(users);
+            }).catch((error) => {
+                console.error("Erreur lors de la récupération des utilisateurs:", error);
+            });
+        }
+
+        // Initialiser la liste et mettre à jour automatiquement toutes les 30 secondes
+        refreshUserList();
+        setInterval(refreshUserList, 30000); // Met à jour la liste toutes les 30 secondes
+
+        // Gestion de la couleur de fond personnalisée
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const userDocRef = doc(firestore, 'users', user.uid);
+                const userDoc = await getDoc(userDocRef);
+
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    const backgroundColor = userData.backgroundColor || '#121212'; // Défaut : gris foncé
+                    
+                    // Appliquer la couleur de fond
+                    document.body.style.backgroundColor = backgroundColor;
+                } else {
+                    console.log("Document utilisateur introuvable.");
+                }
+            } else {
+                console.log("Utilisateur non connecté.");
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion / Inscription</title>
+    <link rel="icon" type="image/x-icon" href="favicon-16x16.png">
+    <script src="https://kit.fontawesome.com/7a37db3ea8.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 20px;
+        }
+        #signinPassword, #signupPassword {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            background: #333;
+            border: 1px solid #444;
+            border-radius: 5px;
+            color: #e0e0e0;
+        }
+        #toggleForm {
+            display: block;
+            margin: 10px auto;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            transition: background 0.3s ease;
+        }
+        #toggleForm:hover {
+            background-color: #0056b3;
+        }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: #1f1f1fb4;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            text-align: center;
+            color: #e0e0e0;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #b0b0b0;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            background: #333;
+            border: 1px solid #444;
+            border-radius: 5px;
+            color: #e0e0e0;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #292e33;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            transition: background 0.3s ease;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button id="toggleForm">S'inscrire / Se connecter</button>
+        
+        <!-- Formulaire de connexion -->
+        <div id="signinFormContainer">
+            <h1>Connexion</h1>
+            <form id="signinForm">
+                <div class="form-group">
+                    <label for="signinEmail">Email</label>
+                    <input type="text" id="signinEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="signinPassword">Mot de passe</label>
+                    <input type="password" id="signinPassword" required>
+                </div>
+                <button type="submit">Se connecter</button>
+            </form>
+        </div>
+
+        <!-- Formulaire d'inscription -->
+        <div id="signupFormContainer" style="display: none;">
+            <h1>Inscription</h1>
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="signupEmail">Email</label>
+                    <input type="text" id="signupEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Mot de passe</label>
+                    <input type="password" id="signupPassword" required>
+                </div>
+                <button type="submit">S'inscrire</button>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+    
+        // Configuration Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCV2ffPnfoq2Lpdc3eT47BXvVdxS4GBzDE",
+            authDomain: "endd-724fb.firebaseapp.com",
+            projectId: "endd-724fb",
+            storageBucket: "endd-724fb.appspot.com",
+            messagingSenderId: "455523572128",
+            appId: "1:455523572128:web:dc12bbd99ad2c191836cc5",
+            measurementId: "G-DX8JK1VZRK"
+        };
+
+        // Initialiser Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Gérer la connexion
+        document.getElementById('signinForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('signinEmail').value;
+            const password = document.getElementById('signinPassword').value;
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                alert('Connexion réussie !');
+                window.location.href = 'jkk.html'; // Redirection vers "jkk.html"
+            } catch (error) {
+                console.error('Erreur de connexion:', error);
+                alert('Erreur de connexion : ' + error.message);
+            }
+        });
+
+        // Gérer l'inscription
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            try {
+                await createUserWithEmailAndPassword(auth, email, password);
+                alert('Inscription réussie !');
+            } catch (error) {
+                console.error('Erreur d\'inscription:', error);
+                alert('Erreur d\'inscription : ' + error.message);
+            }
+        });
+
+        // Basculer entre les formulaires
+        document.getElementById('toggleForm').addEventListener('click', () => {
+            const signinForm = document.getElementById('signinFormContainer');
+            const signupForm = document.getElementById('signupFormContainer');
+            if (signupForm.style.display === 'none') {
+                signupForm.style.display = 'block';
+                signinForm.style.display = 'none';
+            } else {
+                signupForm.style.display = 'none';
+                signinForm.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

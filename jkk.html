@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outils de Développement Personnel</title>
+    <style>
+        /* Styles CSS pour une interface sombre et sobre */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+            background-color: #1e1e1e;
+            color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        main {
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .tool-card {
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px;
+            width: 300px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .tool-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .tool-card h2 {
+            margin-top: 0;
+            font-size: 24px;
+            color: #ffffff;
+        }
+
+        .tool-card p {
+            font-size: 14px;
+            line-height: 1.5;
+            color: #cccccc;
+            flex-grow: 1;
+        }
+
+        .tool-card a {
+            display: block;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #007bff;
+            color: #ffffff;
+            text-align: center;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .tool-card a:hover {
+            background-color: #0056b3;
+        }
+
+        footer {
+            width: 100%;
+            padding: 10px;
+            text-align: center;
+            background-color: #1e1e1e;
+            color: #ffffff;
+            position: fixed;
+            bottom: 0;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        main{margin-bottom: 50px;}
+        .blaze{
+    text-decoration: none; color: white ;
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1><a href="#" class="blaze">MyProductivity</a></h1>
+    </header>
+
+
+
+
+    <main>
+        <!-- Trois outils avec images -->
+        <div class="tool-card">
+            <img src="https://via.placeholder.com/300x150" alt="Meditation App">
+            <h2>Arène</h2>
+            <p>Une application de méditation pour aider à la relaxation et à la concentration. Choisissez parmi une variété de sessions guidées.</p>
+            <a href="index.html">Télécharger</a>
+        </div>
+
+        <div class="tool-card">
+            <img src="https://via.placeholder.com/300x150" alt="Time Tracker">
+            <h2>Évolution</h2>
+            <p>Suivez votre temps de manière efficace avec cet outil de suivi du temps. Idéal pour la gestion de projets et la productivité.</p>
+            <a href="tsts.html" download="TimeTracker.zip">Télécharger</a>
+        </div>
+
+        <div class="tool-card">
+            <img src="https://via.placeholder.com/300x150" alt="Gestionnaire de Tâches">
+            <h2>Classement</h2>
+            <p>Organisez vos tâches et projets avec ce gestionnaire de tâches intuitif et facile à utiliser.</p>
+            <a href="list.html" download="TaskManager.zip">Télécharger</a>
+        </div>
+
+        <!-- Trois outils sans images -->
+        <div class="tool-card">
+            <h2>Memento Moris</h2>
+            <p>Notez vos pensées quotidiennes et suivez vos objectifs personnels avec cet outil de journal numérique facile à utiliser.</p>
+            <a href="nouveau.html" download="JournalDeBord.zip">Télécharger</a>
+        </div>
+
+        <div class="tool-card">
+            <h2>Mon Compte</h2>
+            <p>Suivez et améliorez vos habitudes quotidiennes avec cet outil. Parfait pour développer de nouvelles routines et rester motivé.</p>
+            <a href="profile.html" download="HabitTracker.zip">Télécharger</a>
+        </div>
+
+        <div class="tool-card">
+            <h2>Liens Utiles</h2>
+            <p>Apprenez les principes de la pleine conscience et intégrez-les dans votre vie quotidienne avec ce guide complet.</p>
+            <a href="ok.html" download="MindfulnessGuide.zip">Télécharger</a>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Outils de Développement Personnel</p>
+    </footer>
+</body>
+</html>

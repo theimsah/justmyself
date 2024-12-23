@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graphique des Points en Temps Réel</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+        // Configuration Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAJapQ7Y2iwW49alBkG3UsKl8Lq4D8mWwU",
+            authDomain: "last-9aee8.firebaseapp.com",
+            databaseURL: "https://last-9aee8-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "last-9aee8",
+            storageBucket: "last-9aee8.appspot.com",
+            messagingSenderId: "543978749666",
+            appId: "1:543978749666:web:0587a84de496dd7073a8bb",
+            measurementId: "G-SCY61WX3QH"
+        };
+
+        // Initialisation Firebase
+        const app = initializeApp(firebaseConfig);
+        const firestore = getFirestore(app);
+
+        let chart = null;
+
+        async function getPointsData() {
+            try {
+                const q = collection(firestore, 'points');
+                const querySnapshot = await getDocs(q);
+
+                if (querySnapshot.empty) {
+                    console.log('Aucune donnée trouvée.');
+                    return { labels: [], data: [] };
+                }
+
+                const labels = [];
+                const data = [];
+
+                querySnapshot.forEach((docSnapshot) => {
+                    const dataPoint = docSnapshot.data();
+                    console.log('Données du document:', dataPoint); // Ajoutez cette ligne pour déboguer
+                    if (dataPoint.submissionCount !== undefined && dataPoint.dailyPoints !== undefined) {
+                        labels.push(dataPoint.submissionCount);
+                        data.push(dataPoint.dailyPoints);
+                    } else {
+                        console.warn('Données invalides trouvées:', dataPoint);
+                    }
+                });
+
+                console.log('Labels:', labels); // Ajoutez cette ligne pour déboguer
+                console.log('Data:', data); // Ajoutez cette ligne pour déboguer
+
+                return { labels, data };
+            } catch (error) {
+                console.error('Erreur lors de la récupération des données:', error);
+                return { labels: [], data: [] };
+            }
+        }
+
+        async function updateChart() {
+            try {
+                const { labels, data } = await getPointsData();
+
+                if (labels.length === 0 || data.length === 0) {
+                    alert('Aucune donnée disponible pour l\'affichage du graphique.');
+                    return;
+                }
+
+                if (chart) {
+                    chart.data.labels = labels;
+                    chart.data.datasets[0].data = data;
+                    chart.update();
+                } else {
+                    const ctx = document.getElementById('pointsChart').getContext('2d');
+                    chart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Points quotidiens',
+                                data: data,
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                x: {
+                                    beginAtZero: true,
+                                    title: {
+                                        display: true,
+                                        text: 'Submission Count'
+                                    }
+                                },
+                                y: {
+                                    beginAtZero: true,
+                                    title: {
+                                        display: true,
+                                        text: 'Points'
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error('Erreur lors de l\'actualisation du graphique:', error);
+            }
+        }
+
+        function startRealTimeUpdates() {
+            updateChart();
+            setInterval(updateChart, 60000); // Met à jour toutes les 60 secondes
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            startRealTimeUpdates();
+        });
+    </script>
+</head>
+<body>
+    <button id="showChartBtn">Afficher le Graphique</button>
+    <canvas id="pointsChart" width="400" height="200"></canvas>
+</body>
+</html>

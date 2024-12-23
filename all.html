@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page avec Couleur de Fond 292e33#007bff</title>
+    <style>
+    </style>
+    <script type="module">
+        // Importer les bibliothèques Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+
+        // Configuration Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAJapQ7Y2iwW49alBkG3UsKl8Lq4D8mWwU",
+            authDomain: "last-9aee8.firebaseapp.com",
+            databaseURL: "https://last-9aee8-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "last-9aee8",
+            storageBucket: "last-9aee8.appspot.com",
+            messagingSenderId: "543978749666",
+            appId: "1:543978749666:web:0587a84de496dd7073a8bb",
+            measurementId: "G-SCY61WX3QH"
+        };
+
+        // Initialiser Firebase
+        const app = initializeApp(firebaseConfig);
+        const firestore = getFirestore(app);
+        const auth = getAuth(app);
+
+        // Fonction pour appliquer la couleur de fond
+        async function applyBackgroundColor() {
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    try {
+                        const userDoc = await getDoc(doc(firestore, 'users', user.uid));
+                        if (userDoc.exists()) {
+                            const userData = userDoc.data();
+                            const backgroundColor = userData.backgroundColor || '#ffffff';
+                            document.body.style.backgroundColor = backgroundColor;
+                        } else {
+                            console.warn('Document utilisateur non trouvé');
+                        }
+                    } catch (error) {
+                        console.error('Erreur lors de la récupération des données utilisateur:', error);
+                    }
+                } else {
+                    console.log('Aucun utilisateur connecté');
+                }
+            });
+        }
+
+        // Exécuter la fonction lorsque le DOM est complètement chargé
+        document.addEventListener('DOMContentLoaded', () => {
+            applyBackgroundColor();
+
+            // Autres initialisations ou appels de fonctions
+        });
+    </script>
+</head>
+<body>
+   
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+    import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAJapQ7Y2iwW49alBkG3UsKl8Lq4D8mWwU",
+        authDomain: "last-9aee8.firebaseapp.com",
+        projectId: "last-9aee8",
+        storageBucket: "last-9aee8.appspot.com",
+        messagingSenderId: "543978749666",
+        appId: "1:543978749666:web:0587a84de496dd7073a8bb",
+        measurementId: "G-SCY61WX3QH"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const firestore = getFirestore(app);
+
+    document.addEventListener('DOMContentLoaded', () => {
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const userDocRef = doc(firestore, 'users', user.uid);
+                const userDoc = await getDoc(userDocRef);
+
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    const backgroundColor = userData.backgroundColor || '#ffffff';
+                    
+                    // Appliquer la couleur de fond
+                    document.body.style.backgroundColor = backgroundColor;
+
+                    // Mettre à jour la valeur du sélecteur de couleur
+                    document.getElementById('colorPicker').value = backgroundColor;
+                } else {
+                    console.log("Document utilisateur introuvable.");
+                }
+            } else {
+                console.log("Utilisateur non connecté.");
+            }
+        });
+
+        // Changer la couleur de fond et la stocker dans Firestore
+        document.getElementById('colorPicker').addEventListener('input', async (event) => {
+            const newColor = event.target.value;
+            document.body.style.backgroundColor = newColor;
+
+            const user = auth.currentUser;
+            if (user) {
+                const userDocRef = doc(firestore, 'users', user.uid);
+                await updateDoc(userDocRef, { backgroundColor: newColor });
+            }
+        });
+    });
+</script>

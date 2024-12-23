@@ -1,0 +1,121 @@
+si no A alors 0pts !!
+
+graphique
+affiche graphique
+
+detox dopp
+app recommandé
+
+style&dynamisme
+responsive
+
+affiche le nom
+annuler les points
+ne pas fixer le menu hamburger
+priere
+se connecter/s'inscrire
+page de process dorga
+
+message : "ajouter une note dans votre journal de bord"
+
+
+
+
+
+
+03/09
+
+DESIGN
+prenom plus haut
+responsive design
+menu toggle croix hamburger
+memento instruction
+outils : agenda du succés, … + classroom + forest + obsidian + hack 
+Page d’accueil
+
+
+
+
+Tu es un expert en developpement web et tu vas m'aider.
+
+J'ai integrer firebase à ma page, ainsi deux donnés sont stocké et actualisé à chaque fois que l'utilisateur clique sur un boutton.
+Ces données sont stocké dans la collection "users" de firestore database et dans les champs suivants : "dailyPoints" et "submissionCount".
+dailyPoints indique les points journaliers et submissioncount donne le numéro de la journée associé à ces points.
+
+Ainsi en recuperant les donnés de firebase de l'utilisateur connecté, tu peux me créer une nouvelle page entierement codé, tout languages informatique en 1 texte de code, 
+pour afficher un graphique représentant, les points journalier en fonction du numéro des jours associés.
+Chaque fois que la donné est changé sur firebase, la graphique grandit en temps réel, 
+et alors la courbe passe par un nouveau points d'abscisse la nouvelle valeur de "submissionCount" et d'ordonné la valeur de "dailyPoints". 
+
+
+Attention il n'y a que 2 champs, un pour les jours, un pour les points, ils ne stockent que la derniere donné. 
+Pour que le graphique soit cohérent il faut donc que tu stock chaque donné en temps réel pour que les donnés precedentes perdure sur le graphique.
+
+La structure est la suivante :
+
+points
+      └── (ici l'userID)
+                      ├── submissionCount: 1
+                      ├── dailyPoints: 10
+
+
+(où les valeurs stocké (à la place de 1 et de 10) sont changeantes.)
+
+
+A toi de jouer ! 
+
+PS : Tu auras besoin de ça 
+
+ // Configuration Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAJapQ7Y2iwW49alBkG3UsKl8Lq4D8mWwU",
+            authDomain: "last-9aee8.firebaseapp.com",
+            databaseURL: "https://last-9aee8-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "last-9aee8",
+            storageBucket: "last-9aee8.appspot.com",
+            messagingSenderId: "543978749666",
+            appId: "1:543978749666:web:0587a84de496dd7073a8bb",
+            measurementId: "G-SCY61WX3QH"
+        };
+    
+
+
+
+
+
+
+
+dans ma page le graphique prend des valeurs en trop, il ne doit prendre que celle de l'iduser connecté, pas les autres, deplus 
+puisque la seul valeurs stocké sur firebase est la derniere, lorsque j'actualise la page on ne voit que la derniere valeurs sur firebase
+
+
+
+
+Je veux que tu me fasse un tableau avec la valeur de submissionCount et celle de dailyPoints, cette valeurs est stocké, et chaque fois qu'elle change, la nouvelle s'ajoute au tableau, à coté de la precedente.
+La structure est la suivante :
+
+points
+      └── (ici l'userID)
+                      ├── submissionCount: 1
+                      ├── dailyPoints: 10
+
+
+(où les valeurs stocké (à la place de 1 et de 10) sont changeantes.)
+
+
+A toi de jouer ! 
+
+PS : Tu auras besoin de ça 
+
+ // Configuration Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAJapQ7Y2iwW49alBkG3UsKl8Lq4D8mWwU",
+            authDomain: "last-9aee8.firebaseapp.com",
+            databaseURL: "https://last-9aee8-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "last-9aee8",
+            storageBucket: "last-9aee8.appspot.com",
+            messagingSenderId: "543978749666",
+            appId: "1:543978749666:web:0587a84de496dd7073a8bb",
+            measurementId: "G-SCY61WX3QH"
+        };
+     

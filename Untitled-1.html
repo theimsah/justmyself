@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Afficher DOB depuis Firebase</title>
+    <!-- Ajouter Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+</head>
+<body>
+    <div id="user-dob-list"></div>
+
+    <script>
+        // Configuration Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAJapQ7Y2iwW49alBkG3UsKl8Lq4D8mWwU",
+            authDomain: "last-9aee8.firebaseapp.com",
+            projectId: "last-9aee8",
+            storageBucket: "last-9aee8.appspot.com",
+            messagingSenderId: "543978749666",
+            appId: "1:543978749666:web:0587a84de496dd7073a8bb",
+            measurementId: "G-SCY61WX3QH"
+        };
+    
+        // Initialiser Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Fonction pour récupérer les données de la collection "users"
+        async function getUsersDOB() {
+            try {
+                const usersSnapshot = await db.collection('users').get();
+                const usersList = document.getElementById('user-dob-list');
+                
+                usersSnapshot.forEach(doc => {
+                    const userData = doc.data();
+                    const dob = userData.dob || 'Non défini'; // Utilisez une valeur par défaut si dob est undefined
+                    
+                    // Créer un élément pour afficher la DOB
+                    const dobElement = document.createElement('p');
+                    dobElement.textContent = `Date de naissance: ${dob}`;
+                    usersList.appendChild(dobElement);
+                });
+            } catch (error) {
+                console.error("Erreur lors de la récupération des utilisateurs:", error);
+                alert("Erreur lors de la récupération des utilisateurs. Vérifiez la console pour plus d'informations.");
+            }
+        }
+
+        // Appeler la fonction pour afficher les DOB
+        getUsersDOB();
+
+
+
+
+
+
+        
+    </script>
+</body>
+</html>

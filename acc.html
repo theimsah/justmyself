@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenue sur MyProductivity</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <style>
+   /* Reset de base pour éviter des styles par défaut non souhaités */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Styles globaux */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #121212;
+    color: #e0e0e0;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Header */
+header {
+    background-color: #1f1f1f;
+    padding: 20px 0;
+    border-bottom: 2px solid #444;
+}
+
+header .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Permet le retour à la ligne pour les petits écrans */
+}
+
+header h1 {
+    color: #e0e0e0;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+}
+
+nav a {
+    color: #e0e0e0;
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: #007bff;
+}
+
+/* Section Hero */
+.hero {
+    background-color: #1f1f1f;
+    padding: 40px 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    text-align: center; /* Centrer le texte pour une meilleure lisibilité */
+}
+
+.hero h2 {
+    color: #e0e0e0;
+    font-size: 2em; /* Ajustement pour une meilleure visibilité */
+    margin-bottom: 15px;
+}
+
+.hero p {
+    color: #b0b0b0;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.cta-button:hover {
+    background-color: #0056b3;
+}
+
+/* Section Features */
+.features {
+    padding: 40px 20px;
+}
+
+.features h2 {
+    color: #e0e0e0;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.feature {
+    background-color: #2c2c2c;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid #444;
+    text-align: center; /* Centrer le texte pour une meilleure lisibilité */
+}
+
+.feature h3 {
+    color: #e0e0e0;
+    margin-bottom: 10px;
+}
+
+.feature p {
+    color: #b0b0b0;
+    font-size: 14px; /* Ajustement pour une meilleure lisibilité */
+}
+
+/* Section About */
+.about {
+    padding: 40px 20px;
+    background-color: #1f1f1f;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    text-align: center; /* Centrer le texte pour une meilleure lisibilité */
+}
+
+.about h2 {
+    color: #e0e0e0;
+    margin-bottom: 20px;
+}
+
+.about p {
+    color: #b0b0b0;
+    font-size: 16px; /* Ajustement pour une meilleure lisibilité */
+}
+
+/* Section Contact */
+.contact {
+    padding: 40px 20px;
+    text-align: center; /* Centrer le texte pour une meilleure lisibilité */
+}
+
+.contact h2 {
+    color: #e0e0e0;
+    margin-bottom: 20px;
+}
+
+.contact p {
+    color: #b0b0b0;
+    font-size: 16px; /* Ajustement pour une meilleure lisibilité */
+}
+
+.contact a {
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.contact a:hover {
+    color: #0056b3;
+}
+
+/* Footer */
+footer {
+    background-color: #1f1f1f;
+    padding: 20px 0;
+    border-top: 2px solid #444;
+    text-align: center;
+}
+
+footer p {
+    color: #b0b0b0;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    header .container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    nav ul {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    nav a {
+        font-size: 14px;
+    }
+
+    .hero {
+        padding: 30px 15px;
+    }
+
+    .hero h2 {
+        font-size: 1.8em;
+    }
+
+    .hero p {
+        font-size: 15px;
+    }
+
+    .cta-button {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+
+    .features .feature {
+        margin-bottom: 15px;
+    }
+
+    .about, .contact {
+        padding: 30px 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    header .container {
+        padding: 0 10px;
+    }
+
+    nav ul {
+        gap: 5px;
+    }
+
+    nav a {
+        font-size: 12px;
+    }
+
+    .hero {
+        padding: 20px;
+    }
+
+    .hero h2 {
+        font-size: 1.5em;
+    }
+
+    .hero p {
+        font-size: 14px;
+    }
+
+    .cta-button {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+
+    .features .feature {
+        padding: 15px;
+    }
+
+    .about h2, .contact h2 {
+        font-size: 1.5em;
+    }
+
+    .about p, .contact p {
+        font-size: 14px;
+    }
+}
+
+.blaze{
+    text-decoration: none; color: white ;
+}
+
+
+
+@media (max-width: 908px) {
+    .container .cont{font-size: 20px;}
+    .container ul{display:none;}
+}
+    </style>
+    <header>
+        <div class="container">
+            <h1><a href="#" class="blaze">MyProductivity</a></h1>
+            <nav>
+                <ul>
+                    <li><a href="#home">Accueil</a></li>
+                    <li><a href="#features">Fonctionnalités</a></li>
+                    <li><a href="#about">À Propos</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <section id="home" class="hero">
+        <div class="container">
+            <h2 class="cont">Maximisez Votre Productivité !</h2>
+            <p>Créez votre compte pour suivre vos activités, accumuler des points et défier vos amis ! Avec MyProductivity, vous pouvez personnaliser vos activités, définir leur valeur en points et suivre vos progrès de manière simple et intuitive.</p>
+            <a href="teste.html" class="cta-button">Acceder à sa session</a>
+            <a href="Challengers_1_1.0.apk" class="cta-button">Télécharger l'application mobile</a>
+        </div>
+    </section>
+    <section id="features" class="features">
+        <div class="container">
+            <h2>Fonctionnalités</h2>
+            <div class="feature">
+                <h3>Personnalisation Totale</h3>
+                <p>Ajoutez autant d'activités que vous le souhaitez, définissez leur valeur en points et personnalisez votre tableau de bord.</p>
+            </div>
+            <div class="feature">
+                <h3>Suivi de Productivité</h3>
+                <p>Suivez vos heures de travail, analysez vos performances et voyez comment vous progressez au fil du temps.</p>
+            </div>
+            <div class="feature">
+                <h3>Défis et Compétitions</h3>
+                <p>Défiez vos amis, comparez vos points et voyez qui est le plus productif parmi vous !</p>
+            </div>
+        </div>
+    </section>
+    <section id="about" class="about">
+        <div class="container">
+            <h2>À Propos</h2>
+            <p>MyProductivity est une application conçue pour vous aider à rester motivé et organisé. Nous croyons que la productivité peut être amusante et engageante, et nous sommes là pour vous aider à atteindre vos objectifs.</p>
+        </div>
+    </section>
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Contactez-Nous</h2>
+            <p>Pour toute question ou suggestion, n'hésitez pas à nous contacter à <a href="mailto:contact@myproductivity.com">contact@myproductivity.com</a>.</p>
+        </div>
+    </section>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 MyProductivity. Tous droits réservés.</p>
+        </div>
+    </footer>
+</body>
+</html>

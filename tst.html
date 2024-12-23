@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graphique en Temps Réel au Survol</title>
+    <!-- Inclure les scripts Firebase et Chart.js -->
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            position: relative;
+            display: inline-block;
+        }
+
+        #rectangle {
+            display: none;
+            position: absolute;
+            top: 120%; /* Positionner le rectangle sous le bouton */
+            left: 50%;
+            transform: translateX(-50%); /* Centrer le rectangle horizontalement */
+            width: 600px; /* Taille du rectangle */
+            height: 400px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Optionnel : ombre pour un effet de relief */
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container:hover #rectangle,
+        #showRectangle:hover + #rectangle {
+            display: block;
+        }
+
+        #showRectangle {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button id="showRectangle">Afficher Graphique</button>
+        <div id="rectangle">
+            <canvas id="realtimeChart"></canvas>
+        </div>
+    </div>
+
+    <script>
+        // Configuration Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAJapQ7Y2iwW49alBkG3UsKl8Lq4D8mWwU",
+            authDomain: "last-9aee8.firebaseapp.com",
+            databaseURL: "https://last-9aee8-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "last-9aee8",
+            storageBucket: "last-9aee8.appspot.com",
+            messagingSenderId: "543978749666",
+            appId: "1:543978749666:web:0587a84de496dd7073a8bb",
+            measurementId: "G-SCY61WX3QH"
+        };
+
+        // Initialiser Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // Fonction pour mettre à jour le graphique en temps réel
+        function updateChart(chart, dailyPoints, submissionCount) {
+            chart.data.labels.push(submissionCount); // Ajouter `submissionCount` comme nouvelle étiquette
+            chart.data.datasets[0].data.push(dailyPoints); // Ajouter `dailyPoints` comme nouvelle donnée
+            chart.update(); // Mettre à jour le graphique
+        }
+
+        // Configuration initiale du graphique avec Chart.js
+        const ctx = document.getElementById('realtimeChart').getContext('2d');
+        const realtimeChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [], // L'axe x sera peuplé avec `submissionCount`
+                datasets: [{
+                    label: 'Daily Points',
+                    data: [], // L'axe y sera peuplé avec `dailyPoints`
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                    pointBackgroundColor: 'rgba(75, 192, 192, 1)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom',
+                        title: {
+                            display: true,
+                            text: 'Submission Count',
+                            color: '#e0e0e0'
+                        },
+                        ticks: {
+                            color: '#e0e0e0'
+                        },
+                        grid: {
+                            color: '#444'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Daily Points',
+                            color: '#e0e0e0'
+                        },
+                        ticks: {
+                            color: '#e0e0e0'
+                        },
+                        grid: {
+                            color: '#444'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#e0e0e0'
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                return `Submission Count: ${tooltipItems[0].label}`;
+                            },
+                            label: function(tooltipItem) {
+                                return `Daily Points: ${tooltipItem.raw}`;
+                            }
+                        },
+                        backgroundColor: '#333',
+                        titleColor: '#e0e0e0',
+                        bodyColor: '#e0e0e0',
+                        borderColor: '#444',
+                        borderWidth: 1
+                    }
+                }
+            }
+        });
+
+        // Authentification utilisateur et récupération des données
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                // Obtenir l'ID de l'utilisateur connecté
+                const userId = user.uid;
+                const userDocRef = db.collection("points").doc(userId);
+                const updatesCollectionRef = userDocRef.collection("updates");
+
+                // Charger toutes les données historiques de la sous-collection "updates"
+                updatesCollectionRef.orderBy("timestamp").get().then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                        const data = doc.data();
+                        if (data.dailyPoints !== undefined && data.submissionCount !== undefined) {
+                            updateChart(realtimeChart, data.dailyPoints, data.submissionCount);
+                        }
+                    });
+                }).catch(error => {
+                    console.error("Erreur lors de la récupération des données historiques : ", error);
+                });
+
+                // Variable pour stocker la dernière valeur connue
+                let lastDailyPoints = null;
+                let lastSubmissionCount = null;
+
+                // Écouter les changements en temps réel sur le document de l'utilisateur
+                userDocRef.onSnapshot((doc) => {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        const dailyPoints = data.dailyPoints;
+                        const submissionCount = data.submissionCount;
+                        const timestamp = Date.now(); // Utiliser le temps actuel pour le timestamp
+
+                        // Vérifier si les valeurs ont changé
+                        if (dailyPoints !== lastDailyPoints || submissionCount !== lastSubmissionCount) {
+                            // Mettre à jour le graphique avec les nouvelles données
+                            updateChart(realtimeChart, dailyPoints, submissionCount);
+
+                            // Stocker la nouvelle entrée dans la sous-collection "updates"
+                            updatesCollectionRef.add({
+                                timestamp: timestamp,
+                                dailyPoints: dailyPoints,
+                                submissionCount: submissionCount
+                            }).catch(error => {
+                                console.error("Erreur lors de l'ajout des données : ", error);
+                            });
+
+                            // Mettre à jour les dernières valeurs connues
+                            lastDailyPoints = dailyPoints;
+                            lastSubmissionCount = submissionCount;
+                        }
+                    } else {
+                        console.log("Aucun document trouvé pour cet utilisateur !");
+                    }
+                });
+            } else {
+                console.log("Aucun utilisateur connecté.");
+            }
+        });
+    </script>
+</body>
+</html>

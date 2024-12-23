@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Utilisateur</title>
+    <link rel="icon" type="image/x-icon" href="favicon-16x16.png">
+    <script src="https://kit.fontawesome.com/7a37db3ea8.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 20px;
+            transition: background-color 0.3s ease; /* Ajout d'une transition douce pour la couleur de fond */
+        }
+        .profile-container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: #1f1f1fb4;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        .profile-picture {
+            width: 150px;
+            height: 150px;
+            border-radius: 75px;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+        .profile-info {
+            margin-bottom: 20px;
+        }
+        .profile-info h1 {
+            margin-bottom: 10px;
+        }
+        .profile-info p {
+            margin: 5px 0;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .btn:hover {
+            background: #0056b3;
+        }
+        .logout {margin-top:20px;
+            background: #dc3545;
+        }
+        .logout:hover {
+            background: #c82333;
+        }
+        .arrow {
+            position: absolute;
+            top: 26px;
+            left: 26px;
+            color: white;
+            font-size: 130%;
+        }
+        .arrow a {
+            color: white;
+            font-size: 130%;
+        }
+
+        .logout {
+            background: #dc3545; width: min-content;
+        }
+        .logout:hover {
+            background: #c82333;
+        }
+        .uploadProfilePictureBtn{width: min-content;}
+        #display-username{color:green;}
+
+
+
+
+        input[type="number"], input[type="checkbox"], input[type="text"], select {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            background: #333;
+            border: 1px solid #444;
+            border-radius: 5px;
+            color: #e0e0e0;
+            margin-top:20px;
+        }
+        input[type="checkbox"] {
+            width: auto;
+            margin-right: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #292e33;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            transition: background 0.3s ease;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+      
+        #profilePicture{
+            width: min-content;
+            padding: 10px;
+            background: #292e33;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            transition: background 0.3s ease;
+        }
+       
+        #profilePicture:hover{
+            background: #0056b3;
+        }
+
+        .form-group{display: flex; justify-content: space-around; margin : 20px;}
+        .form-groupa{margin : 20px; display: flex; justify-content: center;}
+.hide{display: none;}
+
+.form-group {
+            position: relative;
+            display: inline-block;
+        }
+     
+       #uploadProfilePictureBtn{width: min-content;}
+#profilePicture{display: none;}
+
+#fileName {
+            padding: 10px;
+            background: #292e33;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            transition: background 0.3s ease;
+        }
+        #fileName:hover {
+            background-color: #0056b3;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="profile-container">
+
+        <div class="profile-info">
+            <h1 id="userName">Nom de l'utilisateur</h1>
+        </div>
+
+        
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+        import { getFirestore, doc, getDoc, updateDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-storage.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAJapQ7Y2iwW49alBkG3UsKl8Lq4D8mWwU",
+            authDomain: "last-9aee8.firebaseapp.com",
+            databaseURL: "https://last-9aee8-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "last-9aee8",
+            storageBucket: "last-9aee8.appspot.com",
+            messagingSenderId: "543978749666",
+            appId: "1:543978749666:web:0587a84de496dd7073a8bb",
+            measurementId: "G-SCY61WX3QH"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const firestore = getFirestore(app);
+        const storage = getStorage(app);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    const userDoc = await getDoc(doc(firestore, 'users', user.uid));
+                    if (userDoc.exists()) {
+                        const userData = userDoc.data();
+                        document.getElementById('userName').innerText = ` ${userData.username || 'Non défini'}`;
+                    }
+                } else {
+                    window.location.href = 'acc.html'; // Redirection vers la page de connexion
+                }
+            });
+
+            
+
+
+            document.getElementById('userName').addEventListener('', async (event) => {
+                const userData = event.target.value;
+                document = color;
+                document.getElementById('userName').textContent = firestore;
+
+                const user = auth.currentUser;
+                if (user) {
+                    await updateDoc(doc(firestore, 'users', user.uid), {
+                        backgroundColor: color
+                    });
+                }
+            });
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+    </script>
+</body>
+</html>
